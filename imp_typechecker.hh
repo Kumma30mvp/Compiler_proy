@@ -13,7 +13,7 @@ using namespace std;
 class ImpTypeChecker : public TypeVisitor {
 public:
   ImpTypeChecker();
-  ~ImpTypeChecker(); //agregué esto
+  ~ImpTypeChecker(); //agregamos destructor
 private:
   Environment<ImpType> env;
 
@@ -28,7 +28,7 @@ public:
   void visit(PrintStatement*);
   void visit(IfStatement*);
   void visit(WhileStatement*);
- // void visit(DoWhileStatement*); añadimos el DOwhile para el tipo c)
+ // void visit(DoWhileStatement*); añadimos visit para DoWhileStatement
   
   ImpType visit(BinaryExp* e);
   ImpType visit(NumberExp* e);

@@ -29,12 +29,13 @@ void ImpCodeGen::codegen(Program* p, string outfname) {
   nolabel = "";
   current_label = 0;
   siguiente_direccion = 0;
+  memory_local = 0;
   p->accept(this);
   ofstream outfile;
   outfile.open(outfname);
   outfile << code.str();
   outfile.close();
-cout<< "Memoria var: " << (mem_locals-1) << endl;
+cout<< "Memoria var: " << (memory_local-1) << endl;
   return;
 }
 
@@ -43,11 +44,11 @@ void ImpCodeGen::visit(Program* p) {
   siguiente_direccion = 0;
   code.str("");     
   code.clear();     
-  codegen(nolabel,"alloc",mem_locals);
+  codegen(nolabel,"alloc",memory_local);
   nolabel= "";
   current_label = 0;
   siguiente_direccion = 1;
-  mem_locals=0;
+  memory_local=0;
   p->body->accept(this);
   codegen(nolabel, "halt");
   return;
@@ -59,7 +60,7 @@ void ImpCodeGen::visit(Body * b) {
   b->var_decs->accept(this);
   b->slist->accept(this);
   direcciones.remove_level();
-  if (siguiente_direccion > mem_locals) mem_locals = siguiente_direccion;
+  if (siguiente_direccion > memory_local) memory_local = siguiente_direccion;
   siguiente_direccion = dir;
   return;
 }
@@ -127,7 +128,18 @@ void ImpCodeGen::visit(WhileStatement* s) {
   codegen(l2, "skip/nop");
   return;
 }
-// void ImpCodeGen::visit(DoWhileStatement* s) {}
+/* void ImpCodeGen::visit(DoWhileStatement* s) {
+  string l1 = next_label();
+  string l2 = next_label();
+  codegen(l1, "skip/nop");
+  
+  s->body->accept(this);
+  s->cond->accept(this);
+
+  codegen(nolabel, "jmpz", l2);
+  codegen(nolabel, "goto", l1);
+  codegen(l2, "skip/nop");return;
+} */
 
 int ImpCodeGen::visit(BinaryExp* e) {
   e->left->accept(this);

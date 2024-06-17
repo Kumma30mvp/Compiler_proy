@@ -6,7 +6,7 @@
 const char* Token::token_names[27] = {
   "LPAREN" , "RPAREN", "PLUS", "MINUS", "MULT","DIV","EXP","LT","LTEQ","EQ",
   "NUM", "ID", "PRINT", "SEMICOLON", "COMMA", "ASSIGN", "CONDEXP", "IF", "THEN", "ELSE", "ENDIF", "WHILE", "DO",
-  "ENDWHILE", "ERR", "END", "VAR" };
+  "ENDWHILE", "ERR", "END", "VAR" }; //Añadimos las palabras reservadas DO, WHILE y ENDWHILE
 
 Token::Token(Type type):type(type) { lexema = ""; }
 
@@ -55,14 +55,16 @@ Token* Scanner::nextToken() {
     token = new Token(Token::NUM, getLexema());
   } else if (isalpha(c)) {
     c = nextChar();
-    while (isalpha(c) || isdigit(c) || c=='_') c = nextChar();//diferente de eendl;
+    while (isalpha(c) || isdigit(c) || c=='_') c = nextChar();
+    //diferente de eendl;
     rollBack();
     string lex = getLexema();
     Token::Type ttype = checkReserved(lex);
     if (ttype != Token::ERR)
       token = new Token(ttype);
     else
-      token = new Token(Token::ID, getLexema()); //comentario ejercicio
+      token = new Token(Token::ID, getLexema()); 
+      //comentario ejercicio
   } else if (strchr("()+-*/;=<,", c)) {
     switch(c) {
     case '(': token = new Token(Token::LPAREN); break;
@@ -80,7 +82,8 @@ Token* Scanner::nextToken() {
                     while (c != '\n') c = nextChar();
                     token = nextToken();
                     break;
-                } //caso adicional para la division en caso de comentario.
+                } 
+                //caso adicional para la division en caso de comentario.
     case ';': token = new Token(Token::SEMICOLON); break;
     case ',': token = new Token(Token::COMMA); break;
     case '=': token = new Token(Token::ASSIGN); break;

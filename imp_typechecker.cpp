@@ -37,7 +37,8 @@ void ImpTypeChecker::visit(VarDecList* decs) {
 
 void ImpTypeChecker::visit(VarDec* vd) {
   list<string>::iterator it;
-  ImpType tt= ImpValue::get_basic_type(vd->type);//verificador de tipos de declaración de variables
+  ImpType tt= ImpValue::get_basic_type(vd->type);
+  //verificador de tipos de declaración de variables
   if (tt == NOTYPE) {
     cout << "Tipo No valido: " << vd->type << endl;
     exit(0);
@@ -62,7 +63,8 @@ void ImpTypeChecker::visit(AssignStatement* s) {
   if (!env.check(s->id)){
     cout<< "Error: Variable" <<s->id << "no declarada"<<endl;
     exit(1);
-  } // verificador tipo de assignaciones
+  } 
+  // verificador tipo de assignaciones
   ImpType lhs_type = env.lookup(s->id);
   if (lhs_type != type);
     cout<< "Error: Tipos no coinciden"<<endl;
@@ -76,8 +78,9 @@ void ImpTypeChecker::visit(PrintStatement* s) {
   return;
 }
 
-void ImpTypeChecker::visit(IfStatement* s) { //verificar
-  ImpType v= s->cond->accept(this); //Asignación de tipo de condición
+void ImpTypeChecker::visit(IfStatement* s) { 
+  ImpType v= s->cond->accept(this); 
+  //Asignación de tipo de condición
   if (v != TBOOL){
     cout<< "Error: Condición no booleana"<<endl;
     exit(0);
@@ -88,7 +91,7 @@ void ImpTypeChecker::visit(IfStatement* s) { //verificar
   return;
 }
 
-void ImpTypeChecker::visit(WhileStatement* s) {//verificar
+void ImpTypeChecker::visit(WhileStatement* s) {
   ImpType tcond = s->cond->accept(this);
   if (tcond != TBOOL){
     cout<< "Error: Condición no booleana"<<endl;
@@ -97,6 +100,8 @@ void ImpTypeChecker::visit(WhileStatement* s) {//verificar
   s->body->accept(this);
  return;
 }
+
+//void ImpTypeChecker::visit(DoWhileStatement* s) {} 
 
 ImpType ImpTypeChecker::visit(BinaryExp* e) {
   ImpType t1 = e->left->accept(this);
@@ -136,7 +141,7 @@ ImpType ImpTypeChecker::visit(ParenthExp* ep) {
   return ep->e->accept(this);
 }
 
-ImpType ImpTypeChecker::visit(CondExp* e) { // verificar
+ImpType ImpTypeChecker::visit(CondExp* e) { 
   ImpType tcond = e->cond->accept(this);
   ImpType ttype = e->etrue->accept(this);
   ImpType ftype = e->efalse->accept(this);

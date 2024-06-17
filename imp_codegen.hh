@@ -24,7 +24,7 @@ public:
   void visit(PrintStatement*);
   void visit(IfStatement*);
   void visit(WhileStatement*);
-//void visit(DoWhileStatement*);
+//void visit(DoWhileStatement*); falta completar
   
   int visit(BinaryExp* e);
   int visit(NumberExp* e);
@@ -37,7 +37,8 @@ private:
   string nolabel;
   int current_label;
   Environment<int> direcciones;
-  int siguiente_direccion, mem_locals;
+  int siguiente_direccion, memory_local;
+  // creación var memory_local para la gestion de memoria
   void codegen(string label, string instr);
   void codegen(string label, string instr, int arg);
   void codegen(string label, string instr, string jmplabel);
